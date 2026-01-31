@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LilyPad.js | Hello Frog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #4ade80;
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #game-container {
+            border: 4px solid #000;
+            box-shadow: -8px 8px 0px #000;
+            background: #000;
+        }
+        h1 { font-size: 1.2rem; margin-bottom: 20px; }
+        .hint { margin-top: 20px; font-size: 0.6rem; opacity: 0.6; }
+    </style>
+</head>
+<body>
+    <h1>HELLO LILYPAD</h1>
+    <div id="game-container"></div>
+    <div class="hint">WASD / ARROWS TO MOVE</div>
+
+    <script src="../dist/lilypad.js"></script>
+    <script>
+        const game = new LILYPAD.Game({
+            width: 160,
+            height: 144,
+            scale: 3,
+            container: 'game-container',
+            bgColor: '#2d5a27'
+        });
+
+        let player;
+        let particles = [];
+
+        // Simple procedural frog sprite
+        function createFrogSprite() {
+            const c = document.createElement('canvas');
+            c.width = 16;
+            c.height = 16;
+            const x = c.getContext('2d');
+            
+            // Body
+            x.fillStyle = '#4ade80';
+            x.fillRect(2, 6, 12, 8);
+            x.fillRect(4, 4, 8, 4);
+            
+            // Eyes
+            x.fillStyle = '#fff';
+            x.fillRect(4, 2, 3, 3);
+            x.fillRect(9, 2, 3, 3);
+            x.fillStyle = '#000';
+            x.fillRect(5, 3, 1, 1);
+            x.fillRect(10, 3, 1, 1);
+            
+            // Legs
+            x.fillStyle = '#22c55e';
+            x.fillRect(1, 10, 2, 4);
+            x.fillRect(13, 10, 2, 4);
+            
+            return c;
+        }
+
+        const frogImg = createFrogSprite();
+        player = new LILYPAD.Sprite(frogImg, 72, 64);
+
+        game.update = (dt) => {
+            const speed = 100 * dt;
+            if (game.input.isPressed('ArrowLeft') || game.input.isPressed('KeyA')) player.x -= speed;
+            if (game.input.isPressed('ArrowRight') || game.input.isPressed('KeyD')) player.x += speed;
+            if (game.input.isPressed('ArrowUp') || game.input.isPressed('KeyW')) player.y -= speed;
+            if (game.input.isPressed('ArrowDown') || game.input.isPressed('KeyS')) player.y += speed;
+
+            // Screen bounds
+            player.x = Math.max(0, Math.min(game.width - player.width, player.x));
+            player.y = Math.max(0, Math.min(game.height - player.height, player.y));
+
+            // Animation effect
+            player.rotation = Math.sin(Date.now() / 100) * 0.1;
+
+            // Particles
+            if (Math.random() > 0.9) {
+                particles.push({
+                    x: player.x + 8,
+                    y: player.y + 14,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: Math.random() * 20,
+                    life: 1.0
+                });
+            }
+            particles.forEach(p => {
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt * 2;
+            });
+            particles = particles.filter(p => p.life > 0);
+        };
+
+        game.draw = (ctx) => {
+            // Draw grass patches
+            ctx.fillStyle = '#244d20';
+            for(let i=0; i<10; i++) {
+                ctx.fillRect(20 + i*30, 20 + (i%3)*40, 4, 2);
+            }
+
+            // Draw particles
+            ctx.fillStyle = '#ffffff55';
+            particles.forEach(p => {
+                ctx.fillRect(p.x, p.y, 2, 2);
+            });
+
+            player.draw(ctx);
+        };
+
+        game.start();
+    </script>
+</body>
+</html>
