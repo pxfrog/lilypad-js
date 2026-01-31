@@ -8,6 +8,9 @@ A lightweight, pixel-art focused JavaScript game engine for the web.
 - 📱 Touch and mobile-friendly
 - 🕹️ Simple API for rapid prototyping
 
+## 🔗 Live Demo & Website
+Visit the official lab: **[pxfrog.com](https://pxfrog.com)**
+
 ## Getting Started
 
 ```html
