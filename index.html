@@ -101,6 +101,9 @@
         <div class="demo-box">
             <iframe src="examples/hello-frog.html"></iframe>
         </div>
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button class="btn" onclick="document.querySelector('iframe').contentWindow.postMessage('shake', '*')">TEST SHAKE EFFECT</button>
+        </div>
 
         <div class="card">
             <h2 style="font-family:'Press Start 2P'; font-size:1rem; color:var(--primary)">WHY LILYPAD?</h2>
@@ -132,7 +135,6 @@
   };
   game.start();
 &lt;/script&gt;</code></pre>
-            <button class="btn" onclick="document.querySelector('iframe').contentWindow.postMessage('shake', '*')">TEST SHAKE EFFECT</button>
             <a href="https://github.com/pxfrog/lilypad-js" class="btn">VIEW ON GITHUB</a>
         </div>
     </div>
