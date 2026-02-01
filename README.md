@@ -34,8 +34,19 @@ Visit the official lab: **[pxfrog.com](https://pxfrog.com)**
     game.draw = (ctx) => {
         // Custom drawing
     };
+
+    // New: Screen Shake
+    // game.shake(intensity, duration);
+    game.shake(5, 0.5); 
 </script>
 ```
+
+## Methods
+
+### Game
+- `start()`: Starts the game loop.
+- `load(files)`: Preloads image assets.
+- `shake(intensity, duration)`: Triggers a screen shake effect.
 
 ## License
 MIT
