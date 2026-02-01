@@ -108,10 +108,24 @@
         </div>
 
         <div class="card">
+            <h2 style="font-family:'Press Start 2P'; font-size:1rem; color:var(--primary)">FEATURES</h2>
+            <ul style="font-size: 1.2rem;">
+                <li>🚀 Ultra-lightweight & zero dependencies</li>
+                <li>🎨 Pixel-perfect image rendering</li>
+                <li>🕹️ Simple Input & Sprite management</li>
+                <li>📳 Built-in Camera Shake system</li>
+            </ul>
+        </div>
+
+        <div class="card">
             <h2 style="font-family:'Press Start 2P'; font-size:1rem; color:var(--primary)">QUICK START</h2>
             <pre><code>&lt;script src="dist/lilypad.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   const game = new LILYPAD.Game({ width: 160, height: 144 });
+  
+  // Trigger screen shake
+  game.shake(5, 0.5); 
+
   game.draw = (ctx) =&gt; {
     ctx.fillStyle = '#4ade80';
     ctx.fillRect(10, 10, 32, 32);
