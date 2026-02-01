@@ -126,6 +126,12 @@
             player.draw(ctx);
         };
 
+        window.addEventListener('message', (e) => {
+            if (e.data === 'shake') {
+                game.shake(8, 0.4);
+            }
+        });
+
         game.start();
     </script>
 </body>
