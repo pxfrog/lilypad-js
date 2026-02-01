@@ -32,6 +32,11 @@ const LILYPAD = (function() {
             this.isRunning = false;
             this.lastTime = 0;
 
+            this.shakeTime = 0;
+            this.shakeIntensity = 0;
+            this.offsetX = 0;
+            this.offsetY = 0;
+
             this.input = new Input(this.canvas);
             
             this.update = (dt) => {};
@@ -78,11 +83,31 @@ const LILYPAD = (function() {
             const dt = (currentTime - this.lastTime) / 1000;
             this.lastTime = currentTime;
 
+            // Handle Camera Shake
+            if (this.shakeTime > 0) {
+                this.shakeTime -= dt;
+                this.offsetX = (Math.random() - 0.5) * this.shakeIntensity;
+                this.offsetY = (Math.random() - 0.5) * this.shakeIntensity;
+                if (this.shakeTime <= 0) {
+                    this.offsetX = 0;
+                    this.offsetY = 0;
+                }
+            }
+
             this.update(dt);
             this.ctx.clearRect(0, 0, this.width, this.height);
+            
+            this.ctx.save();
+            this.ctx.translate(this.offsetX, this.offsetY);
             this.draw(this.ctx);
+            this.ctx.restore();
 
             requestAnimationFrame((t) => this.loop(t));
+        }
+
+        shake(intensity = 5, duration = 0.5) {
+            this.shakeIntensity = intensity;
+            this.shakeTime = duration;
         }
     }
 
